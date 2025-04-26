@@ -21,7 +21,7 @@ jobs:
           cache: 'maven'
 
       - name: Build and Test using Maven
-        run: mvn -B clean verify
+        run: mvn clean verify
 
       - name: Package Artifact
         run: |
@@ -34,10 +34,8 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          # Build Docker image
           docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/my-java-app:latest .
 
       - name: Push Docker Image to ACR
         run: |
-          # Push Docker image to Azure Container Registry
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/my-java-app:latest
