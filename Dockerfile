@@ -1,11 +1,4 @@
-# Use a lightweight Java 17 runtime
-FROM eclipse-temurin:17-jre
+FROM openjdk:17-jdk-slim
+COPY target/gs-maven-0.1.0.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
 
-# Create a directory for the app
-WORKDIR /app
-
-# Copy the jar file into the container
-COPY staging/*.jar app.jar
-
-# Run the jar file
-ENTRYPOINT ["java", "-jar", "app.jar"]
