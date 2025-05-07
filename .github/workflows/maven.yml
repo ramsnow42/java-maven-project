@@ -1,8 +1,7 @@
 name: Java Maven Build and Push Docker Image
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   build-and-push:
@@ -18,8 +17,27 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
     - name: Build with Maven
-      run: mvn clean package
+      run: mvn clean verify
+
+    - name: Run SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        args: >
+          -Dsonar.projectKey=ramsnow42key_java-maven-project
+          -Dsonar.organization=ramsnow42key
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
