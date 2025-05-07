@@ -35,7 +35,7 @@ jobs:
           -Dsonar.projectKey=ramsnow42key_java-maven-project
           -Dsonar.organization=ramsnow42key
           -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.login=${{ secrets.SONAR-TOKEN }}
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
